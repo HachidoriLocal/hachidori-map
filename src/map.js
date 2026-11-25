@@ -83,6 +83,11 @@ export function createMap(el, config, { onPinClick, onEmptyView }) {
       showPins(matched);
     },
 
+    // 隠していた地図を表示し直したときに、大きさを測り直す
+    refresh() {
+      map.invalidateSize();
+    },
+
     setActive(id) {
       activeId = id;
       entries.forEach((e) => e.marker.getElement()?.classList.toggle('is-active', e.store.id === id));

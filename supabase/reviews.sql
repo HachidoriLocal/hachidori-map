@@ -4,7 +4,7 @@
 create table public.reviews (
   id bigint generated always as identity primary key,
   store_id text not null check (char_length(store_id) between 1 and 64),
-  -- ニックネームは任意。空なら画面では「ゲスト」と出す
+  -- ニックネームは任意。空なら画面では「ハチドリさん」と出す
   nickname text check (nickname is null or char_length(nickname) between 1 and 20),
   body text not null check (char_length(btrim(body)) between 1 and 300),
   created_at timestamptz not null default now()

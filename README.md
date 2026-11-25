@@ -28,7 +28,7 @@ python -m http.server 8080
 
 ## 口コミ（Supabase）
 
-お店の詳細カードの下に、だれでも書けて、だれでも読める口コミ欄を出します。
+お店の詳細カードの「コメントする」から、だれでもコメントを書けます。書かれたコメントは、ボタンの下の「みんなのコメント」の枠に1件ずつ表示し、数秒ごとに自動で次へ切り替えます（指でもスワイプでき、触っている間は止まります。動きを減らす設定の端末では自動では切り替えません）。ニックネームが空のコメントは「ハチドリさん」と表示します。
 
 1. Supabase でプロジェクトを作る（無料プランで可）
 2. SQL Editor で `supabase/reviews.sql` を一度だけ実行する
@@ -50,7 +50,7 @@ python -m http.server 8080
 | `description` | string | お店の紹介文 |
 | `rating` / `reviews` | number | ★評価と件数。`isSample: true` のお店は「サンプルの評価です」と表示 |
 | `wantCount` | number | 「◯人が行ってみたい」の人数（v0 はダミー値＋自分が押した分） |
-| `tags` | string[] | 特徴タグ（例：Wi-Fiあり） |
+| `tags` | string[] | 特徴タグ（例：Wi-Fiあり）。いまはカードに表示していない |
 | `ecoTags` | string[] | エコの取り組み（ミント色のタグで表示） |
 | `story` | string | 「なぜハチドリ電力を選んだのか」の本文。`reason` は見出し下の引用として使う |
 | `articles` | `{ kind, source, title, lead, url, thumbnail }[]` | ハチドリ電力のインタビュー記事（`kind: "interview"` のものだけ表示）。写真・リード文（`lead`）付きのカードで出す。`url` が null のものはリンクなしのカードになる |

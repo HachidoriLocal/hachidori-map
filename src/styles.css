@@ -524,10 +524,10 @@ button { font: inherit; letter-spacing: inherit; color: inherit; }
   transition: background-color 0.15s, border-color 0.15s;
 }
 .want-btn__icon { width: 18px; height: 18px; }
-.want-btn.is-on { border-color: var(--hd-ink); background: var(--hd-butter); color: var(--hd-ink); }
+/* 押したら、ボタンはそのままで、しおりのアイコンの中だけターコイズで塗る */
 .want-btn.is-on .want-btn__icon {
-  fill: var(--hd-coral);
-  stroke: var(--hd-ink);
+  fill: var(--hd-teal);
+  stroke: var(--hd-teal-dark);
   stroke-width: 1.8;
   animation: hd-pop 0.35s ease-out;
 }
@@ -685,20 +685,118 @@ button { font: inherit; letter-spacing: inherit; color: inherit; }
 .interview-card__more .icon { width: 13px; height: 13px; }
 a.interview-card .interview-card__more { color: var(--hd-teal-dark); font-weight: 700; }
 
-/* みんなの口コミ */
-.reviews { margin-top: 22px; }
-.review-form {
+/* 行ってみたいの人数（見出しの下） */
+.want-count { margin: 6px 0 0; line-height: 1.5; }
+
+/* みんなのコメント（枠の中で1件ずつ切り替わる） */
+.comments {
+  margin-top: 16px;
+  padding: 16px 0 14px;
+  border-radius: 16px;
+  background: var(--hd-bg);
+}
+.comments__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 0 12px;
+  color: var(--sd-navy);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+}
+.comments__title .icon { width: 20px; height: 20px; }
+.comments__status { margin: 0 16px; padding: 18px 12px; border-radius: 12px; background: #FFFFFF; color: var(--sd-ink-l); font-size: 12.5px; line-height: 1.7; text-align: center; }
+.comments__track {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 16px;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  list-style: none;
+}
+.comments__track::-webkit-scrollbar { display: none; }
+.comment-card {
+  flex: none;
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  scroll-snap-align: start;
+}
+.comment-card__head { display: flex; align-items: center; gap: 12px; }
+.comment-card__avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+}
+.comment-card__who { min-width: 0; }
+.comment-card__name {
+  margin: 0;
+  overflow: hidden;
+  color: var(--sd-navy);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.comment-card__date { display: block; color: var(--sd-ink-l); font-size: 11px; line-height: 1.5; }
+.comment-card__body {
+  display: -webkit-box;
+  margin: 12px 0 0;
+  overflow: hidden;
+  color: var(--sd-ink);
+  font-size: 13.5px;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+}
+.comments__dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+.comments__dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(31, 45, 68, 0.2);
+  transition: width 0.2s, background-color 0.2s;
+}
+.comments__dots span.is-current { width: 18px; border-radius: 3px; background: var(--hd-teal-dark); }
+
+/* 「コメントする」で開く入力欄。行ってみたい（黄色）と分けて、コメントまわりはティールでそろえる */
+.want-btn[data-comment-toggle][aria-expanded="true"] {
+  border-color: var(--hd-teal-dark);
+  background: var(--hd-mint);
+  color: var(--hd-teal-dark);
+}
+.comment-form {
   display: grid;
   gap: 8px;
+  margin-top: 12px;
   padding: 12px;
-  border-radius: 12px;
-  background: var(--sd-paper);
+  border: 1px solid rgba(1, 81, 71, 0.14);
+  border-radius: 14px;
+  background: #F3FAF9;
 }
-.review-form__body,
-.review-form__nickname {
+.comment-form__body,
+.comment-form__nickname {
   width: 100%;
   min-width: 0;
-  border: 1.5px solid var(--sd-line);
+  border: 1.5px solid rgba(1, 81, 71, 0.18);
   border-radius: 10px;
   background: #FFFFFF;
   color: var(--sd-ink);
@@ -707,31 +805,33 @@ a.interview-card .interview-card__more { color: var(--hd-teal-dark); font-weight
   font-size: 16px;
   letter-spacing: 0.02em;
 }
-.review-form__body {
+.comment-form__body {
   display: block;
   min-height: 88px;
   padding: 10px 12px;
   line-height: 1.7;
   resize: vertical;
 }
-.review-form__nickname { min-height: 44px; padding: 0 12px; }
-.review-form__body:focus,
-.review-form__nickname:focus { outline: none; border-color: var(--sd-teal); }
-.review-form__row { display: flex; gap: 8px; }
-.review-form__submit {
+.comment-form__nickname { min-height: 44px; padding: 0 12px; }
+.comment-form__body:focus,
+.comment-form__nickname:focus { outline: none; border-color: var(--hd-teal-dark); box-shadow: 0 0 0 3px rgba(82, 179, 174, 0.25); }
+.comment-form__body::placeholder,
+.comment-form__nickname::placeholder { color: #9A958D; }
+.comment-form__row { display: flex; gap: 8px; }
+.comment-form__submit {
   flex: none;
   min-height: 44px;
   padding: 0 18px;
   border: 0;
   border-radius: 999px;
-  background: var(--hd-black);
+  background: var(--hd-teal-dark);
   color: #FFFFFF;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
 }
-.review-form__submit:disabled { opacity: 0.5; cursor: default; }
-.review-form__note {
+.comment-form__submit:disabled { opacity: 0.5; cursor: default; }
+.comment-form__note {
   display: flex;
   justify-content: space-between;
   gap: 8px;
@@ -740,17 +840,149 @@ a.interview-card .interview-card__more { color: var(--hd-teal-dark); font-weight
   font-size: 11px;
   line-height: 1.5;
 }
-.review-form__count { flex: none; font-variant-numeric: tabular-nums; }
-.review-form__error { margin: 0; color: var(--hd-pink); font-size: 12px; font-weight: 700; line-height: 1.6; }
+.comment-form__count { flex: none; font-variant-numeric: tabular-nums; }
+.comment-form__error { margin: 0; color: var(--hd-pink); font-size: 12px; font-weight: 700; line-height: 1.6; }
 
-.review-list { margin: 12px 0 0; padding: 0; list-style: none; }
-.review { padding: 12px 2px; border-top: 1px solid var(--sd-line); }
-.review:first-child { border-top: 0; }
-.review__meta { display: flex; align-items: baseline; gap: 8px; margin: 0; line-height: 1.5; }
-.review__name { color: var(--sd-navy); font-size: 12.5px; font-weight: 700; overflow-wrap: anywhere; }
-.review__date { color: var(--sd-ink-l); font-size: 11px; }
-.review__body { margin: 4px 0 0; font-size: 13.5px; line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }
-.review-list__status { padding: 10px 2px; color: var(--sd-ink-l); font-size: 12.5px; line-height: 1.7; }
+/* ---------- マップ／オンラインの切り替え ---------- */
+.views {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* 画面下のタブ */
+.tabbar {
+  display: flex;
+  padding-bottom: var(--safe-bottom);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--hd-cream);
+}
+.tabbar__tab {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 58px;
+  border: 0;
+  background: none;
+  color: #6F6A63;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+}
+.tabbar__tab .icon { width: 22px; height: 22px; }
+.tabbar__tab[aria-selected="true"] { color: var(--hd-black); }
+.tabbar__tab[aria-selected="true"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 40px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--hd-teal);
+  transform: translateX(-50%);
+}
+
+/* タブの上に重ならないように、ご意見ボタンを持ち上げる */
+.fab { bottom: calc(58px + 16px + var(--safe-bottom)); }
+
+/* オンラインのお店の一覧 */
+.online-view {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px 16px 96px;
+  background: var(--hd-bg);
+}
+.online-view__lead {
+  max-width: 720px;
+  margin: 0 auto 12px;
+  color: #6F6A63;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+.online-list {
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+.online-item {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  color: #2A2825;
+  text-align: left;
+  cursor: pointer;
+}
+.online-item__thumb {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--genre);
+  color: var(--genre-fg);
+}
+.online-item__icon { width: 40px; height: 40px; stroke-width: 1.5; }
+.online-item__thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.online-item__text { display: grid; flex: 1; align-content: start; gap: 4px; min-width: 0; }
+.online-item__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.online-item__tags .cat-tag { border-color: #1F2D44; color: #1F2D44; }
+.online-item__name { color: #1F2D44; font-size: 15px; font-weight: 900; line-height: 1.5; }
+.online-item__description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #6F6A63;
+  font-size: 12.5px;
+  line-height: 1.7;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.online-item__place { display: inline-flex; align-items: center; gap: 4px; color: #6F6A63; font-size: 11.5px; }
+.online-item__place .icon { width: 14px; height: 14px; }
+.online-empty { margin: 32px 0; color: #6F6A63; font-size: 13px; font-weight: 700; text-align: center; }
+
+/* 詳細カードの「ショップを見る」 */
+.shop-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 48px;
+  margin: 16px 0 0;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--hd-black);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-decoration: none;
+}
+.shop-link .icon { width: 18px; height: 18px; }
+.shop-link.is-disabled { background: var(--sd-cream); color: var(--sd-ink-l); }
+.shop-link.is-disabled span { flex-basis: 100%; font-size: 11px; font-weight: 500; text-align: center; }
 
 /* ---------- 初回モーダル ---------- */
 .modal {

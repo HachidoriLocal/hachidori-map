@@ -4,6 +4,8 @@ import { initTracking, track, trackPageView } from './track.js';
 import { createMap } from './map.js';
 import { createCard } from './card.js';
 import { createFilter } from './filter.js';
+import { createOnlineList } from './online.js';
+import { createTabs } from './tabs.js';
 import { showToast, setupOnboarding, setupFeedback } from './ui.js';
 
 const MESSAGES = {
@@ -41,11 +43,28 @@ async function main() {
     onClose: () => map.setActive(null),
   });
 
+  const onlineList = createOnlineList(document.getElementById('online'), {
+    onSelect(store) {
+      track('online_item_click', { store_id: store.id });
+      card.open(store);
+    },
+  });
+
+  createTabs(document.querySelector('.tabbar'), {
+    onChange(tab) {
+      track('tab_select', { tab });
+      card.close();
+      // 隠れている間に地図の大きさが変わっていることがあるので、表示し直す
+      if (tab === 'map') map.refresh();
+    },
+  });
+
   createFilter(document.getElementById('filter'), {
     onChange(genre) {
       track('filter_select', { genre });
       card.close();
       map.filter(genre);
+      onlineList.filter(genre);
     },
   });
 
@@ -59,10 +78,14 @@ async function main() {
   });
 
   try {
-    map.setStores(await loadStores());
+    const stores = await loadStores();
+    // 実店舗は地図に、ネットショップだけのお店はオンラインのタブに出す
+    map.setStores(stores.filter((s) => !s.online));
+    onlineList.setStores(stores.filter((s) => s.online));
   } catch (err) {
     console.error(err);
     document.getElementById('map-error').hidden = false;
+    document.getElementById('online').innerHTML = '<p class="online-empty">うまく表示できませんでした。少し時間をおいて、もう一度開いてみてください</p>';
   }
 }
 
