@@ -36,6 +36,7 @@ async function main() {
   card = createCard({
     sheetEl: document.getElementById('sheet'),
     backdropEl: document.getElementById('sheet-backdrop'),
+    config,
     track,
     onClose: () => map.setActive(null),
   });

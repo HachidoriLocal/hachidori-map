@@ -21,4 +21,12 @@ export default {
 
   // お店データ。差し替えるときはこのファイルを入れ替える
   storesUrl: './data/stores.json',
+
+  // 口コミの保存先（Supabase）。Project URL と anon / publishable key を入れる
+  // どちらかが空のときは、口コミの欄を表示しない
+  // anon key はブラウザに公開してよい鍵。service_role / secret key は絶対に書かないこと
+  supabase: {
+    url: 'https://kbyiscsxefndeikwtbky.supabase.co',
+    anonKey: 'sb_publishable_e-h1vJheKZHtARHj-Hy9aQ_wPMcPJkg',
+  },
 };

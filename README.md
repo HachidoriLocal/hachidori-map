@@ -24,6 +24,19 @@ python -m http.server 8080
 | `initialView` | 初期表示の中心座標とズーム（全店が収まらない画面では自動で広げる） |
 | `locateZoom` | 「現在地のまわりを見る」で移動したときのズーム |
 | `storesUrl` | お店データのパス |
+| `supabase.url` / `supabase.anonKey` | 口コミの保存先（Supabase の Project URL と anon / publishable key）。どちらかが空なら口コミ欄は非表示 |
+
+## 口コミ（Supabase）
+
+お店の詳細カードの下に、だれでも書けて、だれでも読める口コミ欄を出します。
+
+1. Supabase でプロジェクトを作る（無料プランで可）
+2. SQL Editor で `supabase/reviews.sql` を一度だけ実行する
+3. Project Settings → API の Project URL と anon / publishable key を `config.js` の `supabase` に書く
+
+- ブラウザからは「読む」「書く」だけができます。不適切な口コミは、Supabase の Table Editor（`reviews` テーブル）から行を消してください
+- 本文は 300 文字まで、ニックネームは 20 文字まで（任意）。ニックネームは端末に覚えておき、次回から自動で入ります
+- 無料プランは 1 週間アクセスがないとプロジェクトが一時停止します。管理画面から再開すればデータはそのまま戻ります
 
 ## お店データの差し替え
 
@@ -55,10 +68,11 @@ python -m http.server 8080
 | `filter_select` | ジャンルを選んだ | `genre` |
 | `want_to_go_on` / `want_to_go_off` | 行ってみたい／取り消し | `store_id` |
 | `article_click` | 記事を読む | `store_id` |
+| `review_post` | 口コミを投稿した | `store_id`、`length`（文字数） |
 | `feedback_click` | ご意見を送る | ― |
 | `locate_click` | 現在地ボタン | `granted`（true / false）、`result`（ok / denied / unavailable / timeout / unsupported） |
 
-端末内（localStorage）に保存しているのは、初回訪問日時・初回モーダルを閉じたか・行ってみたいを押したお店IDだけです。
+端末内（localStorage）に保存しているのは、初回訪問日時・初回モーダルを閉じたか・行ってみたいを押したお店ID・口コミのニックネームだけです。
 
 ## 公開
 
