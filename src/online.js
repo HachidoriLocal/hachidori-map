@@ -23,7 +23,6 @@ export function createOnlineList(el, { onSelect }) {
             </span>
             <span class="online-item__name">${escapeHtml(store.name)}</span>
             ${store.description ? `<span class="online-item__description">${escapeHtml(store.description)}</span>` : ''}
-            <span class="online-item__place">${icon('place')}${escapeHtml(store.prefecture)}のお店</span>
           </span>
         </button>
       </li>`;

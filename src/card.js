@@ -229,9 +229,9 @@ export function createCard({ sheetEl, backdropEl, config, track, onClose }) {
     // 「素泊まり可」などの特徴タグは出さず、エコの取り組みだけを出す
     const tags = (store.ecoTags ?? []).map((t) => `<li class="tag tag--eco">${icon('leaf')}${escapeHtml(t)}</li>`).join('');
     // 架空のお店なので、住所は市区町村まで・電話番号は出さない（要件定義書 5-3）
-    // オンラインのお店は、住所のかわりに拠点（都道府県・市区町村）を出す
+    // オンラインのお店は、住所も拠点も出さない
     const info = store.online
-      ? infoRow('place', '拠点', `${store.prefecture}${store.city}`)
+      ? ''
       : [
         infoRow('place', '住所', `${store.prefecture}${store.city}`, store.isSample ? 'サンプルのため番地は非表示' : ''),
         store.isSample ? infoRow('phone', '電話番号', '―', 'サンプルのため非表示') : '',
@@ -278,7 +278,7 @@ export function createCard({ sheetEl, backdropEl, config, track, onClose }) {
         ${tags ? `<ul class="tags" aria-label="お店の特徴">${tags}</ul>` : ''}
         ${store.online ? shopLink(store) : ''}
 
-        <dl class="info">${info}</dl>
+        ${info ? `<dl class="info">${info}</dl>` : ''}
 
         <section class="story">
           <h3 class="section-head">なぜハチドリ電力を選んだのか</h3>
